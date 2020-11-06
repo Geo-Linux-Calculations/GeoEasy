@@ -1121,26 +1121,98 @@ and select one or more layers for mass point, break lines and hole markers.
 Load
 ....
 
+Open an existing DTM. The input is selected from the standard file selection 
+dialog. Beside the .dtm file a .pnt and a. pol file have to be in the 
+same folder.
+
 Add
 ...
+
+Add another DTM to the loaded one and regenerate triangles considering points,
+break/border lines from both DTMs.
 
 Close
 .....
 
+Close the loaded DTM.
+
 Save
 ....
+
+Save the loaded DTM.
 
 Profile
 .......
 
+Create a profile specifying start and end points and distance between point
+in the profile. The interpolated elevations with horizontal coordinates are
+printed in the Calculation results window. Optionally a DXF or a GeoEasy 
+coordinate file can be created from the interpolated profile points.
+
+.. figure:: images/profile.png
+	:align: center
+
+	Profile dialog
+
+.. note::
+
+	You can use the *Height interpolation* tool from the toolbar to
+    specify start and end points with the mouse. Click on the start point and
+    drag the mouse to draw a rubber line and release mouse button et the end
+    point.
+
 Contours
 ........
+
+Generate contour lines. The contour interval can be set in a dialog box.
+Enter 0 for the contour interval to erase contour lines from the 
+graphic window.
+
+.. note::
+
+	You can export contour lines to a DXF file using the DXF ourput.
 
 Volume
 ......
 
+Calculate volume above a reference plain.
+The user have to enter the height of the reference plain. The volume is
+calculated in the prisms above the reference plain. The result is written into 
+the *Calculation results* window.
+
+.. code::
+
+    2020.11.02 19:52 - Volume ... - test
+    Base height  Volume        Above        Below       Area     Surface area
+     100.000    1267409.3    1267409.3          0.0     178543.3     179311.4
+
+The *Volume* = *Above* - *Below*.
+
 Volume difference
 .................
+
+Calculate volume difference between the loaded and another TIN. GRIDs are
+generated from both TINs using the same GRID steps. Only the common area of the
+two generated GRIDs are considered.
+
+.. figure:: rg_images/ascii_grid.png
+
+First the user have to give the grid step (step for north and east axis). 
+Next in the file selection dialogue a previously saved DTM can be selected.
+
+.. code::
+
+    2020.11.02 19:40 - Volume difference ... testa - testb
+    Grid step: 50.00
+    Lower left  corner: 655886.80 222996.11
+    Upper right corner: 656417.18 223621.18
+    Cut  Volume: 32125.1 m3 Area: 125000.0 m2
+    Fill Volume: 10376.4 m3 Area:  45000.0 m2
+    Same: 10000.0 m2
+
+Beside the results in the *Calculation results* window a new difference grid is
+generated in the folder of the loaded TIN. This file is an ESRI ASCII GRID
+which can be loaded into several sortware among others into QGIS.
 
 VRML/X3D export
 ...............
