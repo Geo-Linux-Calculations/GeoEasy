@@ -7,7 +7,7 @@ global comTypes
 global comSetTypes
 
 # saved Communication Parameters
-set comSetTypes {{"ComEasy РїР°СЂР°РјРµС‚СЂС‹" {.com}}}
+set comSetTypes {{"ComEasy параметры" {.com}}}
 
 # accepted file types for download
 set comTypes {
@@ -20,81 +20,81 @@ set comTypes {
 	{"TopCon GTS-210" {.210}}
 	{"Trimble M5" {.m5}}
 	{"Nikon DTM-300" {.nik}}
-	{"Geodat 124 С„РѕСЂРјР°С‚" {.dat}}
-	{"Р’СЃРµ С„Р°Р№Р»С‹" {.*}}
+	{"Geodat 124 формат" {.dat}}
+	{"Все файлы" {.*}}
 }
 
 # window titles
 set comEasyMsg(comTitle)		"ComEasy V1.0"
 set comEasyMsg(digikom)			"Sponsor DigiKom Ltd."
-set comEasyMsg(about1)			"РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅР°СЏ СЃРІСЏР·СЊ"
-set comEasyMsg(about2)			"Р”Р»СЏ РіРµРѕРґРµР·РёСЃС‚РѕРІ"
-set comEasyMsg(parsTitle)		"РџР°СЂР°РјРµС‚СЂС‹ СЃРІСЏР·Рё"
-set comEasyMsg(error)			"РћС€РёР±РєР°"
+set comEasyMsg(about1)			"Последовательная связь"
+set comEasyMsg(about2)			"Для геодезистов"
+set comEasyMsg(parsTitle)		"Параметры связи"
+set comEasyMsg(error)			"Ошибка"
 
 # menu text
-set comEasyMsg(mComFile)		"РљРѕРјР°РЅРґС‹"
-set comEasyMsg(mComPars)		"РќР°СЃС‚СЂРѕР№РєРё ..."
-set comEasyMsg(mComDir)			"РџР°РїРєРё"
-set comEasyMsg(mComDownload)		"РџСЂРёРЅСЏС‚СЊ ..."
-set comEasyMsg(mComUpload)		"РћС‚РїСЂР°РІРёС‚СЊ ..."
-set comEasyMsg(mComStop)		"РћС‚РјРµРЅРёС‚СЊ"
-set comEasyMsg(mComExit)		"Р’С‹С…РѕРґ"
-set comEasyMsg(mComHelp)		"РЎРїСЂР°РІРєР°"
-set comEasyMsg(mComHelp1)		"РџРѕРјРѕС‰СЊ ..."
-set comEasyMsg(mComAbout)		"Рћ ..."
-set comEasyMsg(mComStored)		"РЎРѕС…СЂР°РЅРµРЅРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹"
-set comEasyMsg(mComPrint)		"РџРµС‡Р°С‚СЊ"
-set comEasyMsg(mComPrintSelection)	"Р’С‹Р±РѕСЂ РїСЂРёРЅС‚РµСЂР°"
+set comEasyMsg(mComFile)		"Команды"
+set comEasyMsg(mComPars)		"Настройки ..."
+set comEasyMsg(mComDir)			"Папки"
+set comEasyMsg(mComDownload)		"Принять ..."
+set comEasyMsg(mComUpload)		"Отправить ..."
+set comEasyMsg(mComStop)		"Отменить"
+set comEasyMsg(mComExit)		"Выход"
+set comEasyMsg(mComHelp)		"Справка"
+set comEasyMsg(mComHelp1)		"Помощь ..."
+set comEasyMsg(mComAbout)		"О ..."
+set comEasyMsg(mComStored)		"Сохраненные параметры"
+set comEasyMsg(mComPrint)		"Печать"
+set comEasyMsg(mComPrintSelection)	"Выбор принтера"
 
 # label text
-set comEasyMsg(parsHead1)		"РџР°СЂР°РјРµС‚СЂС‹ Р»РёРЅРёРё"
-set comEasyMsg(parsHead2)		"РџР°СЂР°РјРµС‚СЂС‹ СЃРІСЏР·Рё"
-set comEasyMsg(parsHead3)		"Р”СЂСѓРіРёРµ РїР°СЂР°РјРµС‚СЂС‹"
+set comEasyMsg(parsHead1)		"Параметры линии"
+set comEasyMsg(parsHead2)		"Параметры связи"
+set comEasyMsg(parsHead3)		"Другие параметры"
 
-set comEasyMsg(parsPort)		"РљР°РЅР°Р»:"
-set comEasyMsg(parsBaud)		"РЎРєРѕСЂРѕСЃС‚СЊ:"
-set comEasyMsg(parsParity)		"Р§РµС‚РЅРѕСЃС‚СЊ:"
-set comEasyMsg(parsData)		"Р‘РёС‚С‹ РґР°РЅРЅС‹С…:"
-set comEasyMsg(parsStop)		"РЎС‚РѕРїРѕРІС‹Рµ Р±РёС‚:"
-set comEasyMsg(parsEofchar)		"EOF-РјР°СЂРєРµСЂ:"
+set comEasyMsg(parsPort)		"Канал:"
+set comEasyMsg(parsBaud)		"Скорость:"
+set comEasyMsg(parsParity)		"Четность:"
+set comEasyMsg(parsData)		"Биты данных:"
+set comEasyMsg(parsStop)		"Стоповые бит:"
+set comEasyMsg(parsEofchar)		"EOF-маркер:"
 
-set comEasyMsg(parsBlocking)	"Р‘Р»РѕРєРёСЂРѕРІРєР°:"
-set comEasyMsg(parsTranslation)	"EOL-РјР°СЂРєРµСЂ:"
-set comEasyMsg(parsBuffering)	"Р‘СѓС„РµСЂРёР·Р°С†РёСЏ:"
-set comEasyMsg(parsBuffsize)	"Р Р°Р·РјРµСЂ Р±СѓС„РµСЂР°:"
-set comEasyMsg(parsEncoding)	"РљРѕРґРѕРІР°СЏ СЃС‚СЂР°РЅРёС†Р°:"
-set comEasyMsg(parsInit)		"РќР°С‡Р°Р»СЊРЅР°СЏ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ:"
-set comEasyMsg(parsQuery)		"РћРїСЂРµРґРµР»РёС‚РµР»СЊ Р·Р°РїРёСЃРё:"
-set comEasyMsg(parsSendquery)	"Р—Р°РІРµСЂС€Р°СЋС‰Р°СЏ Р·Р°РїРёСЃСЊ:"
-set comEasyMsg(parsDir)			"РџР°РїРєР°:"
+set comEasyMsg(parsBlocking)	"Блокировка:"
+set comEasyMsg(parsTranslation)	"EOL-маркер:"
+set comEasyMsg(parsBuffering)	"Буферизация:"
+set comEasyMsg(parsBuffsize)	"Размер буфера:"
+set comEasyMsg(parsEncoding)	"Кодовая страница:"
+set comEasyMsg(parsInit)		"Начальная последовательность:"
+set comEasyMsg(parsQuery)		"Определитель записи:"
+set comEasyMsg(parsSendquery)	"Завершающая запись:"
+set comEasyMsg(parsDir)			"Папка:"
 
 # button labels
-set comEasyMsg(ok)				"РћРљ"
-set comEasyMsg(cancel)			"РћС‚РјРµРЅРёС‚СЊ"
-set comEasyMsg(save)			"РЎРѕС…СЂР°РЅРёС‚СЊ"
-set comEasyMsg(load)			"Р—Р°РіСЂСѓР·РёС‚СЊ"
+set comEasyMsg(ok)				"ОК"
+set comEasyMsg(cancel)			"Отменить"
+set comEasyMsg(save)			"Сохранить"
+set comEasyMsg(load)			"Загрузить"
 
 # error messages
-set comEasyMsg(warning)			"РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ"
-set comEasyMsg(helpfile)		"Р¤Р°Р№Р» СЃРїСЂР°РІРєРё РЅРµ РЅР°Р№РґРµРЅ"
-set comEasyMsg(browser)			"РЎРїСЂР°РІРєР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚РѕР±СЂР°Р¶РµРЅР°\nСЃРґРµР»Р°Р№С‚Рµ Р°СЃСЃРѕС†РёР°С†РёСЋ Р±СЂР°СѓР·РµСЂР°, С‡С‚РѕР±С‹ РѕС‚РєСЂС‹С‚СЊ .html С„Р°Р№Р»С‹"
-set comEasyMsg(gizidll)			"РљРѕРґ РѕС€РёР±РєРё СѓСЃС‚Р°РЅРѕРІРєРё=1"
-set comEasyMsg(comOpen)			"РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ РєР°РЅР°Р»Р°"
-set comEasyMsg(comConfigure)	"РћС€РёР±РєР° РЅР°СЃС‚СЂРѕР№РєРё РєР°РЅР°Р»Р°"
-set comEasyMsg(cantSave)		"РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р° РЅР° Р·Р°РїРёСЃСЊ"
-set comEasyMsg(cantOpen)		"РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р° РЅР° С‡С‚РµРЅРёРµ"
-set comEasyMsg(cantSource)		"РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»Р° РїР°СЂР°РјРµС‚СЂРѕРІ"
-set comEasyMsg(cantRead)		"РћС€РёР±РєР° С‡С‚РµРЅРёСЏ РєР°РЅР°Р»Р°"
-set comEasyMsg(cantWrite)		"РћС€РёР±РєР° Р·Р°РїРёСЃРё РєР°РЅР°Р»Р°"
-set comEasyMsg(cantFRead)		"РћС€РёР±РєР° С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р°"
-set comEasyMsg(cantFWrite)		"РћС€РёР±РєР° Р·Р°РїРёСЃРё С„Р°Р№Р»Р°"
-set comEasyMsg(noBlocking)		"Р‘Р»РѕРєРёСЂРѕРІРєР° СЃРІСЏР·Рё РїРѕРєР° РЅРµРґРѕСЃС‚СѓРїРЅР°"
+set comEasyMsg(warning)			"предупреждение"
+set comEasyMsg(helpfile)		"Файл справки не найден"
+set comEasyMsg(browser)			"Справка не может быть отображена\nсделайте ассоциацию браузера, чтобы открыть .html файлы"
+set comEasyMsg(gizidll)			"Код ошибки установки=1"
+set comEasyMsg(comOpen)			"Ошибка открытия канала"
+set comEasyMsg(comConfigure)	"Ошибка настройки канала"
+set comEasyMsg(cantSave)		"Ошибка открытия файла на запись"
+set comEasyMsg(cantOpen)		"Ошибка открытия файла на чтение"
+set comEasyMsg(cantSource)		"Ошибка загрузки файла параметров"
+set comEasyMsg(cantRead)		"Ошибка чтения канала"
+set comEasyMsg(cantWrite)		"Ошибка записи канала"
+set comEasyMsg(cantFRead)		"Ошибка чтения файла"
+set comEasyMsg(cantFWrite)		"Ошибка записи файла"
+set comEasyMsg(noBlocking)		"Блокировка связи пока недоступна"
 
 # info messages
-set comEasyMsg(waiting)			"РћР¶РёРґР°РЅРёРµ РґР°РЅРЅС‹С… ... (РЅР°Р¶РјРёС‚Рµ Ctrl-Z РґР»СЏ РѕС‚РјРµРЅС‹)"
-set comEasyMsg(comClose)		"РљРѕРјРјСѓРЅРёРєР°С†РёРѕРЅРЅС‹Р№ РєР°РЅР°Р» Р·Р°РєСЂС‹С‚"
-set comEasyMsg(comFClose)		"Р¤Р°Р№Р» Р·Р°РєСЂС‹С‚"
-set comEasyMsg(eof)				"РљРѕРЅРµС† С„Р°Р№Р»Р°"
-set comEasyMsg(loadgizi)		"Р—Р°РіСЂСѓР·РёС‚СЊ РґР°РЅРЅС‹Рµ РІ GeoEasy?"
+set comEasyMsg(waiting)			"Ожидание данных ... (нажмите Ctrl-Z для отмены)"
+set comEasyMsg(comClose)		"Коммуникационный канал закрыт"
+set comEasyMsg(comFClose)		"Файл закрыт"
+set comEasyMsg(eof)				"Конец файла"
+set comEasyMsg(loadgizi)		"Загрузить данные в GeoEasy?"
 set comEasyMsg(separator)		"---------------------"
