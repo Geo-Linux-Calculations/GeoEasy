@@ -99,7 +99,7 @@ linux: GeoEasy ./i18n/geo_easy.* ./i18n/com_easy.* geo_easy.msk
 	rm -f Gizi${VERSION}Linux.tgz
 	tar cvzf Gizi${VERSION}Linux.tgz GeoEasy geo_easy.msk default.msk \
 		./i18n/geo_easy.* ./i18n/com_easy.* \
-		com_set bitmaps demodata
+		com_set demodata
 doc: ${DOC_SOURCES}
 	# update version
 	VVV=${VERSION}
