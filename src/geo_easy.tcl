@@ -28,6 +28,8 @@ proc GeoEasy {top} {
 	global geoEasyMsg
 	global geoLoaded geoLoadedDir
 	global tinLoaded
+    global f1_icon f2_icon about_icon zoom_in_icon zoom_out_icon zoom_prev_icon pan_icon area_icon newp_icon ruler_icon sp1_icon reg_icon zdtm_icon breakline_icon hole_icon xchgtri_icon
+    global icon_status
 	global PI PI2 RO R PISEC PI2SEC FOOT2M OL2M SEC2CC E
 	global topw
 	global logName
