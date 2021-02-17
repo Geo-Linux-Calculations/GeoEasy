@@ -645,6 +645,10 @@ proc Gama2dXmlOut {fn pns fixed {flag 0}} {
 	# check for approximate coordinates for unknowns
 	set free_network [expr {([llength $fixed] == 0) ? 1 : 0}]
 	set msg_flag 0	;# display warning on too large pure value
+	if {[tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(delappr) \
+		warning 0 OK $geoEasyMsg(no)] != 0} {
+		set outadjval 1
+	}
 	foreach pn $pns {
 	#	get all references from all loaded geo data sets
 		foreach geo $geoLoaded {
@@ -1055,10 +1059,10 @@ proc Gama2dXmlOut {fn pns fixed {flag 0}} {
         }
         switch -exact [lindex $measure($i) 2] {
             "D" {
-                puts $xml "<distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" stdev=\"[format %.${decimals}f $stddev($i)]\" />"
+                puts $xml "    <distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" stdev=\"[format %.${decimals}f $stddev($i)]\" />"
             }
             "H" {
-                puts $xml "<direction to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
+                puts $xml "    <direction to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
             }
         }
         set last_st [lindex $measure($i) 0]
@@ -1107,6 +1111,10 @@ proc Gama3dXmlOut {fn pns fixed {flag 0}} {
 	# check for approximate coordinates for unknowns
 	set msg_flag 0	;# display warning on too large pure value
 	set free_network [expr {([llength $fixed] == 0) ? 1 : 0}]
+	if {[tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(delappr) \
+		warning 0 OK $geoEasyMsg(no)] != 0} {
+		set outadjval 1
+	}
 	foreach pn $pns {
 #puts "pn: $pns"
 	#	get all references from all loaded geo data sets
@@ -1578,19 +1586,19 @@ proc Gama3dXmlOut {fn pns fixed {flag 0}} {
         switch -exact [lindex $measure($i) 2] {
             "D" {
                 # horizontal distance
-                puts $xml "<distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" stdev=\"[format %.${decimals}f $stddev($i)] />"
+                puts $xml "    <distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" stdev=\"[format %.${decimals}f $stddev($i)] />"
             }
             "H" {
                 # direction
-                puts $xml "<direction to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
+                puts $xml "    <direction to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
             }
             "S" {
                 # slope distance
-                puts $xml "<s-distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" from_dh=\"[format %.${decimals}f [lindex $measure($i) 5]]\" to_dh=\"[format %.${decimals}f [lindex $measure($i) 6]]\" stdev=\"$stddev($i)\" />"
+                puts $xml "    <s-distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" from_dh=\"[format %.${decimals}f [lindex $measure($i) 5]]\" to_dh=\"[format %.${decimals}f [lindex $measure($i) 6]]\" stdev=\"$stddev($i)\" />"
             }
             "V" {
                 # zenith angle
-                puts $xml "<z-angle to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" from_dh=\"[format %.${decimals}f [lindex $measure($i) 5]]\" to_dh=\"[format %.${decimals}f [lindex $measure($i) 6]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
+                puts $xml "    <z-angle to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" from_dh=\"[format %.${decimals}f [lindex $measure($i) 5]]\" to_dh=\"[format %.${decimals}f [lindex $measure($i) 6]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
             }
         }
         set last_st [lindex $measure($i) 0]
