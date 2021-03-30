@@ -6,7 +6,7 @@ proc init_animate {rw} {
     global animate geoEasyMsg
 	global tcl_platform
 	global home
-    global f1_icon f2_icon about_icon zoom_in_icon zoom_out_icon zoom_prev_icon pan_icon area_icon newp_icon ruler_icon sp1_icon reg_icon zdtm_icon breakline_icon hole_icon xchgtri_icon
+    global f1_icon f2_icon
     global globe_icon
     global icon_status
 
