@@ -264,7 +264,11 @@ proc GeoMask {maskn fn {type "_geo"}} {
 		for {set i 1} {$i <= $rows} {incr i} {
 			for {set j 0} {$j < [llength $def]} {incr j} {
 				set ent ${grd}.e${i}-${j}
-				entry $ent -width [lindex $widths $j]
+                if {[lsearch -exact {"ANG" "DST" "FLOAT" "INT"} [lindex $params $j]] == -1} {
+                    entry $ent -width [lindex $widths $j] -justify left
+                } else {
+                    entry $ent -width [lindex $widths $j] -justify right    ;# right align numeric
+                }
 				bind $ent <FocusOut> "GeoValid %W"
 				bind $ent <FocusIn> "LastVal %W"
 				bind $ent <3> "GeoMaskPopup [list $oarr($j)] %W %X %Y"
@@ -1115,10 +1119,11 @@ proc ANG1 {val} {
 #   @return distance in $distUnits
 proc DST {val} {
     global distUnits
+    global decimals
 
     set w ""
     switch -exact $distUnits {
-        "m" { set w $val }
+        "m" { set w [format "%.${decimals}f" $val] }
         "FEET" { set w [FEET $val] }
         "OL" { set w [OL $val] }
     }
@@ -2788,7 +2793,7 @@ proc EditPar {fn} {
 		global e$i
 		set e$i [GetVal $c [set ${fn}_par]]
 		set old_e$i [set e$i]
-		entry $this.e$i -textvariable e$i -width 10
+		entry $this.e$i -textvariable e$i -width 10 -justify right
 		grid $this.l$i -row $i -column 0 -sticky w
 		grid $this.e$i -row $i -column 1 -sticky w
 		incr i
