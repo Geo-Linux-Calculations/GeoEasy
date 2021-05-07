@@ -4,9 +4,10 @@
 #
 # AUTHOR: zvezdochiot
 
-set terminal png font "Verdana,8" size 950, 520
+set terminal svg size 950,520 font "Verdana,14"
 
-set title 'Downloads 2017 October - 2021 March'
+set title 'Downloads of the last 12 months'
+
 set xlabel ' '
 set ylabel 'Count'
 
@@ -21,9 +22,8 @@ set style histogram rowstacked
 set style fill solid border -1
 set boxwidth 0.75
 
-set terminal png enhanced
-set output 'downloads.png'
-plot for [i=2:9] 'downloads.txt' using i:xtic(1)
+set output 'downloads12.svg'
+plot for [i=2:9] 'downloads_last_12_months.txt' using i:xtic(1)
 
 # set terminal xterm
 # replot

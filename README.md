@@ -1,3 +1,9 @@
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Geo-Linux-Calculations/GeoEasy)
+![GitHub Release Date](https://img.shields.io/github/release-date/Geo-Linux-Calculations/GeoEasy)
+![GitHub repo size](https://img.shields.io/github/repo-size/Geo-Linux-Calculations/GeoEasy)
+![GitHub all releases](https://img.shields.io/github/downloads/Geo-Linux-Calculations/GeoEasy/total)
+![GitHub](https://img.shields.io/github/license/Geo-Linux-Calculations/GeoEasy)
+
 # GeoEasy
 surveying calculation, network adjustment, digital terrain models, regression calculation
 
@@ -61,4 +67,10 @@ GeoEasy available in different languages. You can localize GeoEasy to your langu
 
 ## Download statistics of binary releases
 
-![Download statistics](doc/downloads.png "Download statistics from October 2017 to nowadays")
+### Last 12 months
+
+![Download statistics](doc/statistics/downloads12.svg "Download statistics of last 12 months")
+
+### Yearly
+
+![Download statistics](doc/statistics/downloadsyearly.svg "Download statistics of years")
