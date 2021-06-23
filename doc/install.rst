@@ -9,6 +9,7 @@ Supported operating systems
 
 * Windows XP/2000/7/8/10 32 or 64 bit
 * Linux with X11 Ubuntu/Fedora/Debian 64 bit
+* OSX
 * Android (experimental)
 
 Windows Installation
@@ -170,6 +171,8 @@ version regularly, then the *git clone* should be preferred.
 
 	git clone https://github.com/zsiki/GeoEasy.git
 
+This will install the latest development version. If you want to install the stabile version select a zip or tgz 
+file from the https://github.com/zsiki/GeoEasy/tags page.
 Change directory to **GeoEasy/src** and
 run the following commands from the command line, to prepare it.
 
@@ -237,6 +240,53 @@ directory.
 	git pull
 
 The preparation should be repeated (make source).
+
+OSX (Machintosh) installation
+-----------------------------
+
+Usually Tcl/Tk, the necessary programming language is installed on OSX. Please check it from a terminal window.
+
+.. code:: bash
+
+	wish
+
+After this you should see a small empty graphic window in the upper left part of the 
+screen and the prompt in the terminal window is changed to %. Press CTLR/D in the terminal window
+to exit or close the small graphic window.
+
+For Machintosh there is no binary release. You can use only use the source release.
+Open a terminal window, chenge you current directory where you would like to install the software and type the following commands:
+
+.. code:: bash
+
+	git clone https://github.com/zsiki/GeoEasy.git
+	cd GeoEasy/src
+	make source
+	wish geo_easy.tcl
+
+This will install the latest development version. If you want to install the stabile version select a zip or tgz 
+file from the https://github.com/zsiki/GeoEasy/tags page.
+The last *wish* command starts the application. If you would like you start it again
+open a terminal window and change to the installation directory and enter
+
+.. code:: bash
+
+	wish geo_easy.tcl
+
+The menus of the program are in the main menu bar, see the screenshot below.
+
+.. figure:: images/osx.png
+    :align: center
+
+    GeoEasy on Machintosh (thanks to Marco Kukavicic)
+
+You can create a small script to automate the startup process.
+
+.. note::
+
+    To have the external tools, like GNU Gama, Triangle, etc. 
+    you should install those programs as it is documented in the 
+    Ubuntu source install section.
 
 Android Installation
 --------------------
