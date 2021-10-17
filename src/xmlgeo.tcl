@@ -638,8 +638,8 @@ proc Gama2dXmlOut {fn pns fixed {flag 0}} {
 	global autoRefresh
 	global xmlTypes 
 	global decimals
-    global n nmeasure outadjval
-	global gamaProg gamaConf gamaAngles gamaTol gamaShortOut gamaSvgOut gamaXmlOut
+	global n nmeasure
+	global gamaProg gamaConf gamaTol gamaShortOut gamaSvgOut gamaXmlOut
 	global RO
 	global SEC2CC
 
