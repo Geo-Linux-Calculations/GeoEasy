@@ -47,11 +47,13 @@ proc GeoNet3D {{pns ""}} {
 		if {[string length $filen] == 0 || [string match "after#*" $filen]} {
 			return
 		}
+puts "{$gamaProg} --language [string range $geoLang 0 1] --encoding $geoCp --angles $gamaAngles --xml \"${tmpname}.xml\" --text \"${tmpname}.txt\" --svg \"${filen}\" \"$tmpname\""
 		if {[catch {eval [concat exec "{$gamaProg} --language [string range $geoLang 0 1] --encoding $geoCp --angles $gamaAngles --xml \"${tmpname}.xml\" --text \"${tmpname}.txt\" --svg \"${filen}\" \"$tmpname\""]} msg]} {
 			tk_dialog .msg $geoEasyMsg(error) $msg error 0 OK
 			return
 		}
 	} else {
+puts "{$gamaProg} --language [string range $geoLang 0 1] --encoding $geoCp --angles $gamaAngles --xml \"${tmpname}.xml\" --text \"${tmpname}.txt\" \"$tmpname\""
 		if {[catch {eval [concat exec "{$gamaProg} --language [string range $geoLang 0 1] --encoding $geoCp --angles $gamaAngles --xml \"${tmpname}.xml\" --text \"${tmpname}.txt\" \"$tmpname\""]} msg]} {
 			tk_dialog .msg $geoEasyMsg(error) $msg error 0 OK
 			return
@@ -121,11 +123,13 @@ proc GeoNet2D {{pns ""}} {
 		if {[string length $filen] == 0 || [string match "after#*" $filen]} {
 			return
 		}
+puts "{$gamaProg} --language [string range $geoLang 0 1] --encoding $geoCp --angles $gamaAngles --xml \"${tmpname}.xml\" --text \"${tmpname}.txt\" --svg \"${filen}\" \"$tmpname\""
 		if {[catch {eval [concat exec "{$gamaProg} --language [string range $geoLang 0 1] --encoding $geoCp --angles $gamaAngles --xml \"${tmpname}.xml\" --text \"${tmpname}.txt\" --svg \"${filen}\" \"$tmpname\""]} msg]} {
 			tk_dialog .msg $geoEasyMsg(error) $msg error 0 OK
 			return
 		}
 	} else {
+puts "{$gamaProg} --language [string range $geoLang 0 1] --encoding $geoCp --angles $gamaAngles --xml \"${tmpname}.xml\" --text \"${tmpname}.txt\" \"$tmpname\""
 		if {[catch {eval [concat exec "{$gamaProg} --language [string range $geoLang 0 1] --encoding $geoCp --angles $gamaAngles --xml \"${tmpname}.xml\" --text \"${tmpname}.txt\" \"$tmpname\""]} msg]} {
 			tk_dialog .msg $geoEasyMsg(error) $msg error 0 OK
 			return
@@ -572,7 +576,7 @@ proc Gama1dXmlOut {fn pns fixed {flag 0}} {
 	} else {
 		set cov_band "cov-band = \"0\""
 	}
-	puts $xml "<parameters sigma-apr = \"1\" conf-pr = \"$gamaConf\" tol-abs = \"$gamaTol\" sigma-act = \"aposteriori\" update-constrained-coordinates = \"yes\" $cov_band />"
+	puts $xml "<parameters sigma-apr = \"1\" conf-pr = \"$gamaConf\" tol-abs = \"$gamaTol\" sigma-act = \"aposteriori\" $cov_band />"
 	puts $xml "<points-observations distance-stdev=\"$stdDist1 $stdDist2\" direction-stdev=\"[expr {round($stdAngle * $SEC2CC)}]\" angle-stdev=\"[expr {round($stdAngle * $SEC2CC * sqrt(2.0))}]\" zenith-angle-stdev=\"[expr {round($stdAngle * $SEC2CC)}]\" >"
 	if {$free_network} {
 		set adjz "Z"
@@ -643,7 +647,6 @@ proc Gama2dXmlOut {fn pns fixed {flag 0}} {
 	global RO
 	global SEC2CC
 
-    set outadjval 0
 	set nmeasure 0							;# number of observations considered
 	set n [llength $pns]
 	GeoDia .dia $geoEasyMsg(adjDia) nmeasure n	;# display dialog panel
@@ -654,10 +657,6 @@ proc Gama2dXmlOut {fn pns fixed {flag 0}} {
 	# check for approximate coordinates for unknowns
 	set free_network [expr {([llength $fixed] == 0) ? 1 : 0}]
 	set msg_flag 0	;# display warning on too large pure value
-	if {[tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(delappr) \
-		warning 0 OK $geoEasyMsg(no)] != 0} {
-		set outadjval 1
-	}
 	foreach pn $pns {
 	#	get all references from all loaded geo data sets
 		foreach geo $geoLoaded {
@@ -1017,7 +1016,7 @@ proc Gama2dXmlOut {fn pns fixed {flag 0}} {
 	} else {
 		set cov_band "cov-band = \"0\""
 	}
-	puts $xml "<parameters sigma-apr = \"1\" conf-pr = \"$gamaConf\" tol-abs = \"$gamaTol\" sigma-act = \"aposteriori\" update-constrained-coordinates = \"yes\" $cov_band />"
+	puts $xml "<parameters sigma-apr = \"1\" conf-pr = \"$gamaConf\" tol-abs = \"$gamaTol\" sigma-act = \"aposteriori\" $cov_band />"
 	puts $xml "<points-observations distance-stdev=\"$stdDist1 $stdDist2\" direction-stdev=\"[expr {round($stdAngle * $SEC2CC)}]\" angle-stdev=\"[expr {round($stdAngle * $SEC2CC * sqrt(2.0))}]\" zenith-angle-stdev=\"[expr {round($stdAngle * $SEC2CC)}]\" >"
 	if {$free_network} {
 		set adjxy "XY"
@@ -1029,21 +1028,17 @@ proc Gama2dXmlOut {fn pns fixed {flag 0}} {
 	foreach pn $used {
 		if {[lsearch -exact $pns $pn] != -1} {
 			# unknown for adjustment
-            if {$outadjval == 0} {
-                puts $xml "<point id=\"$pn\" adj=\"$adjxy\" />"
-            } else {
-                set pcoo [GetCoord $pn {38 37}]
-                if {$pcoo == ""} {
-                    set pcoo [GetCoord $pn {138 137}]
-                    if {$pcoo == ""} {
-                        puts $xml "<point id=\"$pn\" adj=\"$adjxy\" />"
-                    } else {
-                        puts $xml "<point id=\"$pn\" y=\"[format %.${decimals}f [GetVal 138 $pcoo]]\" x=\"[format %.${decimals}f [GetVal 137 $pcoo]]\" adj=\"$adjxy\" />"
-                    }
-                } else {
-                    puts $xml "<point id=\"$pn\" y=\"[format %.${decimals}f [GetVal 38 $pcoo]]\" x=\"[format %.${decimals}f [GetVal 37 $pcoo]]\" adj=\"$adjxy\" />"
-                }
-            }
+			set pcoo [GetCoord $pn {38 37}]
+			if {$pcoo == ""} {
+				set pcoo [GetCoord $pn {138 137}]
+				if {$pcoo == ""} {
+					puts $xml "<point id=\"$pn\" adj=\"$adjxy\" />"
+				} else {
+					puts $xml "<point id=\"$pn\" y=\"[format %.${decimals}f [GetVal 138 $pcoo]]\" x=\"[format %.${decimals}f [GetVal 137 $pcoo]]\" adj=\"$adjxy\" />"
+				}
+			} else {
+				puts $xml "<point id=\"$pn\" y=\"[format %.${decimals}f [GetVal 38 $pcoo]]\" x=\"[format %.${decimals}f [GetVal 37 $pcoo]]\" adj=\"$adjxy\" />"
+			}
 		} else {
 			set pcoo [GetCoord $pn {38 37}]
 			puts $xml "<point id=\"$pn\" y=\"[format %.${decimals}f [GetVal 38 $pcoo]]\" x=\"[format %.${decimals}f [GetVal 37 $pcoo]]\" fix=\"xy\" />"
@@ -1054,29 +1049,30 @@ proc Gama2dXmlOut {fn pns fixed {flag 0}} {
 #			set adjxy "xy"
 #		}
 	}
-    set last_st ""
-#    set last_st_id ""
-    for {set i 0} {$i < $nmeasure} {incr i} {
-        if {$last_st != [lindex $measure($i) 0]} {
-            if {$i} {
-                puts $xml "</obs>"
-            }
-            puts $xml "<obs from=\"[lindex $measure($i) 0]\">"
-        }
-        if {$stddev($i) <= 0} {
-            set stddev($i) 0.1
-        }
-        switch -exact [lindex $measure($i) 2] {
-            "D" {
-                puts $xml "    <distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" stdev=\"[format %.${decimals}f $stddev($i)]\" />"
-            }
-            "H" {
-                puts $xml "    <direction to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
-            }
-        }
-        set last_st [lindex $measure($i) 0]
-#        set last_st_id [lindex $measure($i) 4]
-    }
+	set last_st ""
+	set last_st_id ""
+	for {set i 0} {$i < $nmeasure} {incr i} {
+		if {$last_st != [lindex $measure($i) 0] || \
+				$last_st_id != [lindex $measure($i) 4]} {
+			if {$i} {
+				puts $xml "</obs>"
+			}
+			puts $xml "<obs from=\"[lindex $measure($i) 0]\">"
+		}
+		if {$stddev($i) <= 0} {
+			set stddev($i) 0.1
+		}
+		switch -exact [lindex $measure($i) 2] {
+			"D" {
+				puts $xml "<distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" stdev=\"[format %.${decimals}f $stddev($i)]\" />"
+			}
+			"H" {
+				puts $xml "<direction to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
+			}
+		}
+		set last_st [lindex $measure($i) 0]
+		set last_st_id [lindex $measure($i) 4]
+	}
 	puts $xml "</obs>"
 	puts $xml "</points-observations>"
 	puts $xml "</network>"
@@ -1103,13 +1099,12 @@ proc Gama3dXmlOut {fn pns fixed {flag 0}} {
 	global decimals
 	global autoRefresh
 	global xmlTypes 
-    global n nmeasure outadjval
+	global nmeasure n
 	global gamaProg gamaConf gamaTol gamaShortOut gamaSvgOut gamaXmlOut
 	global RO
 	global SEC2CC
 
 #puts "Gama3dXmlOut"
-    set outadjval 0
 	set nmeasure 0							;# number of observations considered
 	set n [llength $pns]
 	GeoDia .dia $geoEasyMsg(adjDia) nmeasure n	;# display dialog panel
@@ -1120,10 +1115,6 @@ proc Gama3dXmlOut {fn pns fixed {flag 0}} {
 	# check for approximate coordinates for unknowns
 	set msg_flag 0	;# display warning on too large pure value
 	set free_network [expr {([llength $fixed] == 0) ? 1 : 0}]
-	if {[tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(delappr) \
-		warning 0 OK $geoEasyMsg(no)] != 0} {
-		set outadjval 1
-	}
 	foreach pn $pns {
 #puts "pn: $pns"
 	#	get all references from all loaded geo data sets
@@ -1533,7 +1524,7 @@ proc Gama3dXmlOut {fn pns fixed {flag 0}} {
 	} else {
 		set cov_band "cov-band = \"0\""
 	}
-	puts $xml "<parameters sigma-apr = \"1\" conf-pr = \"$gamaConf\" tol-abs = \"$gamaTol\" sigma-act = \"aposteriori\" update-constrained-coordinates = \"yes\" $cov_band />"
+	puts $xml "<parameters sigma-apr = \"1\" conf-pr = \"$gamaConf\" tol-abs = \"$gamaTol\" sigma-act = \"aposteriori\" $cov_band />"
 	puts $xml "<points-observations distance-stdev=\"$stdDist1 $stdDist2\" direction-stdev=\"[expr {round($stdAngle * $SEC2CC)}]\" angle-stdev=\"[expr {round($stdAngle * $SEC2CC * sqrt(2.0))}]\" zenith-angle-stdev=\"[expr {round($stdAngle * $SEC2CC)}]\" >"
 	if {$free_network} {
 		set adjxyz "XYZ"
@@ -1545,19 +1536,15 @@ proc Gama3dXmlOut {fn pns fixed {flag 0}} {
 	foreach pn $used {
 		if {[lsearch -exact $pns $pn] != -1} {
 			# unknown for adjustment
-            if {$outadjval == 0} {
-                puts $xml "<point id=\"$pn\" adj=\"$adjxyz\" />"
-            } else {
-                set pcooxy [GetCoord $pn {38 37}]
-                if {$pcooxy == ""} {
-                    set pcooxy [GetCoord $pn {138 137}]
-                }
-                set pcooz [GetCoord $pn 39]
-                if {$pcooz == ""} {
-                    set pcooz [GetCoord $pn 139]
-                }
-                puts $xml "<point id=\"$pn\" y=\"[format %.${decimals}f [GetVal {38 138} $pcooxy]]\" x=\"[format %.${decimals}f [GetVal {37 137} $pcooxy]]\" z=\"[format %.${decimals}f [GetVal {39 139} $pcooz]]\" adj=\"$adjxyz\" />"
-            }
+			set pcooxy [GetCoord $pn {38 37}]
+			if {$pcooxy == ""} {
+				set pcooxy [GetCoord $pn {138 137}]
+			}
+			set pcooz [GetCoord $pn 39]
+			if {$pcooz == ""} {
+				set pcooz [GetCoord $pn 139]
+			}
+			puts $xml "<point id=\"$pn\" y=\"[format %.${decimals}f [GetVal {38 138} $pcooxy]]\" x=\"[format %.${decimals}f [GetVal {37 137} $pcooxy]]\" z=\"[format %.${decimals}f [GetVal {39 139} $pcooz]]\" adj=\"$adjxyz\" />"
 		} else {
 			set pcoo [GetCoord $pn {38 37 39}]
 			if {$pcoo != ""} {
@@ -1583,36 +1570,36 @@ proc Gama3dXmlOut {fn pns fixed {flag 0}} {
 #			set adjxyz "xyz"
 #		}
 	}
-    set last_st ""
-#    set last_st_id ""
-    for {set i 0} {$i < $nmeasure} {incr i} {
-        if {$last_st != [lindex $measure($i) 0]} {
-            if {$i} {
-                puts $xml "</obs>"
-            }
-            puts $xml "<obs from=\"[lindex $measure($i) 0]\">"
-        }
-        switch -exact [lindex $measure($i) 2] {
-            "D" {
-                # horizontal distance
-                puts $xml "    <distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" stdev=\"[format %.${decimals}f $stddev($i)] />"
-            }
-            "H" {
-                # direction
-                puts $xml "    <direction to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
-            }
-            "S" {
-                # slope distance
-                puts $xml "    <s-distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" from_dh=\"[format %.${decimals}f [lindex $measure($i) 5]]\" to_dh=\"[format %.${decimals}f [lindex $measure($i) 6]]\" stdev=\"$stddev($i)\" />"
-            }
-            "V" {
-                # zenith angle
-                puts $xml "    <z-angle to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" from_dh=\"[format %.${decimals}f [lindex $measure($i) 5]]\" to_dh=\"[format %.${decimals}f [lindex $measure($i) 6]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
-            }
-        }
-        set last_st [lindex $measure($i) 0]
-        #set last_st_id [lindex $measure($i) 4]
-    }
+	set last_st ""
+	for {set i 0} {$i < $nmeasure} {incr i} {
+		if {$last_st != [lindex $measure($i) 0] || \
+				$last_st_id != [lindex $measure($i) 4]} {
+			if {$i} {
+				puts $xml "</obs>"
+			}
+			puts $xml "<obs from=\"[lindex $measure($i) 0]\">"
+		}
+		switch -exact [lindex $measure($i) 2] {
+			"D" {
+				# horizontal distance
+				puts $xml "<distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" stdev=\"[format %.${decimals}f $stddev($i)] />"
+			}
+			"H" {
+				# direction
+				puts $xml "<direction to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
+			}
+			"S" {
+				# slope distance
+				puts $xml "<s-distance to=\"[lindex $measure($i) 1]\" val=\"[format %.${decimals}f [lindex $measure($i) 3]]\" from_dh=\"[format %.${decimals}f [lindex $measure($i) 5]]\" to_dh=\"[format %.${decimals}f [lindex $measure($i) 6]]\" stdev=\"$stddev($i)\" />"
+			}
+			"V" {
+				# zenith angle
+				puts $xml "<z-angle to=\"[lindex $measure($i) 1]\" val=\"[GON [lindex $measure($i) 3]]\" from_dh=\"[format %.${decimals}f [lindex $measure($i) 5]]\" to_dh=\"[format %.${decimals}f [lindex $measure($i) 6]]\" stdev=\"[expr {round([GON $stddev($i)] * 10000)}]\" />"
+			}
+		}
+		set last_st [lindex $measure($i) 0]
+		set last_st_id [lindex $measure($i) 4]
+	}
 	puts $xml "</obs>"
 	puts $xml "</points-observations>"
 	puts $xml "</network>"

@@ -1,3 +1,11 @@
+Origin:
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/zsiki/GeoEasy)
+![GitHub Release Date](https://img.shields.io/github/release-date/zsiki/GeoEasy)
+![GitHub repo size](https://img.shields.io/github/repo-size/zsiki/GeoEasy)
+![GitHub all releases](https://img.shields.io/github/downloads/zsiki/GeoEasy/total)
+![GitHub](https://img.shields.io/github/license/zsiki/GeoEasy)
+
+GLC.ORG:
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Geo-Linux-Calculations/GeoEasy)
 ![GitHub Release Date](https://img.shields.io/github/release-date/Geo-Linux-Calculations/GeoEasy)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Geo-Linux-Calculations/GeoEasy)

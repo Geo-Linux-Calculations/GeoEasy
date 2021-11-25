@@ -1154,7 +1154,6 @@ proc DST1 {val} {
 proc DMS {val {unit "rad"} {dec 0}} {
 	global PI
 
-#if {$val == ""} { return "" }	;# return empty
 	if {$val < 0} {
 		set val [expr {abs($val)}]
 		set sign 1
@@ -2171,7 +2170,8 @@ proc GeoMaskHtml {maskn fn type} {
 		upvar #0 cooMaskParams($maskn) params
 	}
 	set on [string trim [tk_getSaveFile -defaultextension ".html" \
-		-initialdir $lastDir -filetypes $webTypes -initialfile "${fn}${type}"]]
+		-initialdir $lastDir -filetypes $webTypes \
+        -initialfile "i[GetShortName ${fn}]${type}"]]
 	if {[string length $on] == 0 || [string match "after#*" $on]} { return }
 	set lastDir [file dirname $on]
 	set fd [open $on w]				;# output file
@@ -2388,7 +2388,8 @@ proc GeoMaskRtf {maskn fn type} {
 		upvar #0 cooMaskParams($maskn) params
 	}
 	set on [string trim [tk_getSaveFile -defaultextension ".rtf" \
-		-initialdir $lastDir -filetypes $docTypes -initialfile "${fn}${type}"]]
+		-initialdir $lastDir -filetypes $docTypes \
+        -initialfile "[GetShortName ${fn}]${type}"]]
 	if {[string length $on] == 0 || [string match "after#*" $on]} { return }
 	set lastDir [file dirname $on]
 	set fd [open $on w]				;# output file
@@ -2586,7 +2587,7 @@ proc GeoMaskRtf {maskn fn type} {
 #
 #	Export mask to csv file & open spreadsheet
 #	@param maskn mask definition name
-#	@param fn geo data set name
+#	@param fn geo data set internl name
 #	@param type "_geo" or "_coo"
 proc GeoMaskCsv {maskn fn type} {
 	global geoEasyMsg
@@ -2608,7 +2609,8 @@ proc GeoMaskCsv {maskn fn type} {
 		upvar #0 cooMaskParams($maskn) params
 	}
 	set on [string trim [tk_getSaveFile -defaultextension ".csv" \
-		-initialdir $lastDir -filetypes $csvTypes -initialfile "${fn}${type}"]]
+		-initialdir $lastDir -filetypes $csvTypes \
+        -initialfile "[GetShortName ${fn}]${type}"]]
 	if {[string length $on] == 0 || [string match "after#*" $on]} { return }
 	set lastDir [file dirname $on]
 	set fd [open $on w]				;# output file
