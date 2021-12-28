@@ -132,10 +132,10 @@ proc GeoEasy {top} {
 	ProjSet   ;# set proj params
 	TrSet     ;# set transformation params, msk may rewrite
 	if {[catch {source [file join $home "geo_easy.msk"]} msg] == 1} {
-		tk_dialog .msg "Error" \
+		geo_dialog .msg "Error" \
 			"Error in mask file:\n$msg\nDefault settings will be used" error 0 OK
 		if {[catch {source [file join $home "default.msk"]} msg] == 1} {
-			tk_dialog .msg "Error" \
+			geo_dialog .msg "Error" \
 				"Error in default mask file:\n$msg [info script] [info nameofexecutable]" error 0 OK
 			exit
 		}
@@ -198,30 +198,6 @@ proc GeoEasy {top} {
 		set uhome $env(HOME)
 	}
 	set logName [file join $uhome geo_easy.log]
-	# process command line switches
-	if {[llength $argv] > 0} {
-		# overwrite language if command line parameter given
-		set l [getopt "-lang"]  
-		if {$l == ""} {
-			set l [getopt "--lang"]  
-		}
-		if {[string length $l]} {
-			set l [string tolower $l]
-			set i [lsearch -exact [array names geoLangs] $l]
-			if {$i == -1} {
-				set geoLang eng ;# default language
-				foreach lang [array names geoLangs] {
-					if {[lsearch $geoLangs($lang) [string range $l 0 1]] > -1} {
-						set l $lang
-						break
-					}
-				}
-			}
-			set geoLang $l
-		}
-		# overwrite log name if given
-		set logName [getopt "--log" $logName]  
-	}
 	# parse help options
 	set help [getopt "--help" "--nopar"]
 	if {$help == 1} {
@@ -246,6 +222,7 @@ proc GeoEasy {top} {
 			puts "  --help \[string\] - print help info and exit {authors, modules, version}"
 			puts "  --lang \[string\] - switch to a different language {[lsort [array names geoLangs]]}, default=auto"
 			puts "  --log \[string\] - select log {path/to/file.log | stdout | stderr}, default=$logName"
+            puts "  --exp extensiom - export files from commandline with the given extension"
 			puts "  --nogui - process command line files and exit"
 			puts " files:"
 			puts "  optional list of files of four types"
@@ -257,17 +234,46 @@ proc GeoEasy {top} {
 		}
 		exit 0
 	}  
+	# process command line switches
+    set export ""
+	global nogui
+	set nogui 0		;# GUI enabled 
+	if {[llength $argv] > 0} {
+		# overwrite language if command line parameter given
+		set l [getopt "-lang"]  
+		if {$l == ""} {
+			set l [getopt "--lang"]  
+		}
+		if {[string length $l]} {
+			set l [string tolower $l]
+			set i [lsearch -exact [array names geoLangs] $l]
+			if {$i == -1} {
+				set geoLang eng ;# default language
+				foreach lang [array names geoLangs] {
+					if {[lsearch $geoLangs($lang) [string range $l 0 1]] > -1} {
+						set l $lang
+						break
+					}
+				}
+			}
+			set geoLang $l
+		}
+		# overwrite log name if given
+		set logName [getopt "--log" $logName]  
+        set export [getopt "--exp" "csv"]
+        if {[getopt "--nogui" "--nopar"] == 1} { set nogui 1 }	;# turn of gui
+	}
 
 #	GeoEasy & ComEasy message files
 	foreach name [list geo_easy com_easy] {
 		set msgFile [file join $home i18n $name.$geoLang]
 		if {[file isfile $msgFile] && [file readable $msgFile]} {
 			if {[catch {source -encoding utf-8 $msgFile} msg] == 1} {
-				tk_dialog .msg "Error" "Error in message file:\n$msg" error 0 OK
+				geo_dialog .msg "Error" "Error in message file:\n$msg" error 0 OK
 				exit
 			}
 		} else {
-			tk_dialog .msg "Error" \
+			geo_dialog .msg "Error" \
 				"Message file ($msgFile) not found" error 0 OK
 			exit
 		}
@@ -283,9 +289,6 @@ proc GeoEasy {top} {
 
 	set geoModules [GeoModules 0xFFFF]	;# enable all modules
 
-	global nogui
-	set nogui 0		;# GUI enabled 
-	if {[getopt "--nogui" "--nopar"] == 1} { set nogui 1 }	;# turn of gui
 	# process command line file arguments
 	if {[llength $argv] > 0} {
 		foreach arg $argv {
@@ -303,6 +306,20 @@ proc GeoEasy {top} {
 					*.geo {
 						MenuLoad $top [file normalize $name]
 					}
+                    *.dxf {
+                        global bname battr bcode belev pnlay p3d pcodelayer block ptext dxfpnt skipdbl
+                        set ptext 1     ;# get point from texts
+                        set dxfpnt 0
+                        set block 0
+                        set pnlay ""        ;# get text from all layers
+                        set pcodelayer 1    ;# get layer name into point code
+                        set skipdbl 1       ;# skip double texts
+                        set p3d 0           ;# 2d points
+                        set f [GeoSetID]
+                        lappend geoLoaded $f
+                        lappend geoLoadedDir $name
+                        DXFin $name $f
+                    }
 					*.gpr { GeoProjLoad $top $name }
 					*.msk -
 					*.tcl {
@@ -320,6 +337,34 @@ proc GeoEasy {top} {
 			}
 		}
 	}
+    if {[string length $export]} {
+        foreach fn $geoLoaded {
+            set rn [GetFullName $fn]
+            set nn "[file rootname $rn].$export"
+            switch  [string tolower $export] {
+                geo { set res [SaveGeo $fn $nn] }
+                are { set res [SaveAre $fn $nn] }
+                job { set res [SaveJob $fn $nn] }
+                wld { set res [SaveGsi $fn $nn 8] }
+                gsi { set res [SaveGsi $fn $nn 16] }
+                scr { set res [SaveScr $fn $nn]}
+                sdr { set res [SaveSdr $fn $nn]}
+                210 { set res [Save210 $fn $nn]}
+                nik { set res [SaveNikon $fn $nn]}
+                csv { set res [SaveTxt $fn $nn]}
+                itr { set res [SaveITR2 $fn $nn]}
+                txt { set res [TrackmakerOut $fn $nn]}
+                gpx { set res [GpxOut $fn $nn]}
+                dmp { set res [TxtOut $fn $nn]}
+                kml { set res [KmlOut $fn $nn]}
+                sql { set res [SavePSql $fn $nn]}
+                dxf {
+                    DXFout $nn
+                    break       ;# simple dxf file written
+                }
+            }
+        }
+    }
 	if {$nogui == 1} {
 		exit 0
 	}
@@ -614,7 +659,7 @@ proc GeoModules {moduleinfo} {
 			if {[info exists triangleProg] && [file exists $triangleProg]} {
 				lappend modules dtm
 			} else {
-				tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg(dtmModule) \
+				geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg(dtmModule) \
 					error 0 OK
 			}
 		} else {
@@ -626,7 +671,7 @@ proc GeoModules {moduleinfo} {
 					set triangleProg "${triangleProg}64"
 				}
 			} else {
-				tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg(dtmModule) \
+				geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg(dtmModule) \
 					error 0 OK
 			}
 		}
@@ -641,7 +686,7 @@ proc GeoModules {moduleinfo} {
 			if {[info exists gamaProg] && [file exists $gamaProg]} {
 				lappend modules adj
 			} else {
-				tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg(adjModule) \
+				geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg(adjModule) \
 					error 0 OK
 			}
 		} else {
@@ -653,7 +698,7 @@ proc GeoModules {moduleinfo} {
 					set gamaProg "${gamaProg}64"
 				}
 			} else {
-				tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg(adjModule) \
+				geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg(adjModule) \
 					error 0 OK
 			}
 		}
@@ -666,7 +711,7 @@ proc GeoModules {moduleinfo} {
 		if {[info exists cs2csProg] && [file exists $cs2csProg]} {
 			lappend modules crs
 		} else {
-			tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg(crsModule) \
+			geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg(crsModule) \
 				error 0 OK
 		}
 	} else {
@@ -678,7 +723,7 @@ proc GeoModules {moduleinfo} {
 				set cs2csProg "${cs2csProg}64"
 			}
 		} else {
-			tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg(crsModule) \
+			geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg(crsModule) \
 				error 0 OK
 		}
 	}
@@ -695,7 +740,7 @@ proc GeoRecalcAppr {} {
 	global geoLoaded
 	global geoEasyMsg
 
-	if {[tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(delappr) \
+	if {[geo_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(delappr) \
 		warning 0 OK $geoEasyMsg(cancel)] != 0} {
 		return
 	}
@@ -767,7 +812,7 @@ proc MenuNew {w} {
 	if {$tcl_platform(platform) != "unix" && \
 		([file exists $fn] || [file exists "[file rootname $fn].coo"] || \
 		[file exists "[file rootname $fn].par"])} {
-		if {[tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(overw) \
+		if {[geo_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(overw) \
 			warning 1 $geoEasyMsg(yes) $geoEasyMsg(no)] == 1} {
 			return	;# do not overwrite existing file
 		}
@@ -776,7 +821,7 @@ proc MenuNew {w} {
 	set f [GeoSetID]
 	if {[info exists geoLoaded]} {
 		if {[lsearch -exact $geoLoadedDir $fn] != -1} {
-			tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(-2) \
+			geo_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(-2) \
 				warning 0 OK
 			return			;# geo data set already loaded
 		}
@@ -807,6 +852,7 @@ proc MenuLoad {w {def ""}} {
 	global gpCoo
 	global autoRefresh
 	global loadHeader	;# 0/1 header for faces written or not
+    global nogui
 
 	set loadHeader 0			;# no header written yet
 	set obspn [GetAllObs]		;# get all observed point names for later checks
@@ -823,7 +869,7 @@ proc MenuLoad {w {def ""}} {
 			set f [GeoSetID]
 			if {[info exists geoLoaded]} {
 				if {[lsearch -exact $geoLoadedDir $fn] != -1} {
-					tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(-2) \
+					geo_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(-2) \
 						warning 0 OK
 					continue			;# geo data set already loaded
 				}
@@ -963,7 +1009,7 @@ proc MenuLoad {w {def ""}} {
 					set res [n4ce $fn $f]
 				}
 				default {
-					tk_dialog .msg $geoEasyMsg(warning) \
+					geo_dialog .msg $geoEasyMsg(warning) \
 						"$geoEasyMsg(filetype) $fn" warning 0 OK
 					continue
 				}
@@ -974,10 +1020,10 @@ proc MenuLoad {w {def ""}} {
 				if {$res == -999} {
 					# cancelled, no error
 				} elseif {$res < 0} {
-					tk_dialog .msg $geoEasyMsg(warning) \
+					geo_dialog .msg $geoEasyMsg(warning) \
 					"$geoEasyMsg($res) $fn" warning 0 OK
 				} else {
-					tk_dialog .msg $geoEasyMsg(warning) \
+					geo_dialog .msg $geoEasyMsg(warning) \
 						"$geoEasyMsg(-5) $res $fn" warning 0 OK
 					
 				}
@@ -1006,15 +1052,19 @@ proc MenuLoad {w {def ""}} {
 				}
 			}
 			if {[llength $used] > 0} {
-				GeoListbox [lsort $used] 0 $geoEasyMsg(double) 0
+                if {$nogui} {
+                    GeoLog "$geoEasyMsg(double) [lsort $used]"
+                } else {
+                    GeoListbox [lsort $used] 0 $geoEasyMsg(double) 0
+                }
 			}
 			if {[llength [array names ${f}_geo]] == 0} {
 				# no observations at all
-				tk_dialog .msg $geoEasyMsg(warning) "$geoEasyMsg(1)\n$fn" \
+				geo_dialog .msg $geoEasyMsg(warning) "$geoEasyMsg(1)\n$fn" \
 					warning 0 OK
 			}
 			if {[llength [array names ${f}_coo]] == 0} {	;# no coordinates at all
-				tk_dialog .msg $geoEasyMsg(warning) "$geoEasyMsg(2)\n$fn" \
+				geo_dialog .msg $geoEasyMsg(warning) "$geoEasyMsg(2)\n$fn" \
 					warning 0 OK
 			}
 		}
@@ -1037,7 +1087,7 @@ proc MenuUnload {fn} {
     set in [GetInternalName $fn]
     set sn [GetShortName $fn]
 	if {[info exists geoChanged($in)] && $geoChanged($in) > 0} {
-		set a [tk_dialog .msg $geoEasyMsg(warning) "$geoEasyMsg(saveit) $sn" \
+		set a [geo_dialog .msg $geoEasyMsg(warning) "$geoEasyMsg(saveit) $sn" \
 				warning 0 $geoEasyMsg(yes) $geoEasyMsg(no) $geoEasyMsg(cancel)]
 		switch -exact $a {
 			0 {
@@ -1045,19 +1095,19 @@ proc MenuUnload {fn} {
 				if {$res == 0} {
 					GeoLog "$fn $geoEasyMsg(save)"
 				} else {
-					tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg($res) \
+					geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg($res) \
 						error 0 OK
 				}
 			}
 			1 {
-				GeoLog "$fn $geoEasyMsg(unload)"
+				GeoLog "$sn $geoEasyMsg(unload)"
 			}
 			2 {
 				return 2
 			}
 		}
 	} else {
-		GeoLog "$fn $geoEasyMsg(unload)"
+		GeoLog "$sn $geoEasyMsg(unload)"
 	}
 	catch {unset geoChanged($in)}
 	UnloadGeo $in
@@ -1080,7 +1130,7 @@ proc MenuSave {fn} {
 		set geoChanged($fn) 0	;# not changed yet
 		GeoLog "$fn $geoEasyMsg(save)"
 	} else {
-		tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg($res) \
+		geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg($res) \
 			error 0 OK
 	}
 }
@@ -1135,7 +1185,7 @@ proc MenuSaveAs {fn} {
 			*.kml { set res [KmlOut $fn $nn]}
             *.sql { set res [SavePSql $fn $nn]}
 			default {
-				tk_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(saveext) \
+				geo_dialog .msg $geoEasyMsg(warning) $geoEasyMsg(saveext) \
 					warning 0 OK
 				set saved 0
 			}
@@ -1144,7 +1194,7 @@ proc MenuSaveAs {fn} {
 	if {$res == 0} {
 		GeoLog "$fn $geoEasyMsg(saveas) $nn"
 	} else {
-		tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg($res) \
+		geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg($res) \
 			error 0 OK
 	}
 }
@@ -1171,7 +1221,7 @@ proc GeoProjLoad {top {pn ""}} {
 	# close/save loaded data sets
 	GeoProjClose
 	if {[catch {set f [open $pn "r"]}] != 0} {
-		tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg(-1) error 0 OK
+		geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg(-1) error 0 OK
 		return
 	}
 	set type 0
@@ -1244,7 +1294,7 @@ proc GeoProjLoad {top {pn ""}} {
 				LoadTin $fn	;# try absolute path
 			}
 		} else {
-			tk_dialog .msg $geoEasyMsg(warning) "$geoEasyMsg(-10) $n" \
+			geo_dialog .msg $geoEasyMsg(warning) "$geoEasyMsg(-10) $n" \
 				warning 0 OK
 			return
 		}
@@ -1287,7 +1337,7 @@ proc GeoProjSave {} {
 	if {[string length $pn] == 0 || [string match "after#*" $pn]} { return }
 	set lastDir [file dirname $pn]
 	if {[catch {set f [open $pn "w"]}] != 0} {
-		tk_dialog .msg $geoEasyMsg(error) $geoEasyMsg(-1) error 0 OK
+		geo_dialog .msg $geoEasyMsg(error) $geoEasyMsg(-1) error 0 OK
 		return
 	}
 	# save loaded data set names
@@ -1396,29 +1446,29 @@ proc GeoLog1 {{msg ""}} {
 	if {$logName == "stdout" || $logName == "stderr"} {
 		set logFile $logName
 	} elseif {[catch {set logFile [open $logName "a+"]} errmsg] == 1} {
-		tk_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
+		geo_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
 	}
 	if {[catch {puts $logFile $msg} errmsg] == 1} {
-		tk_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
+		geo_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
 	}
 	if {$logName != "stdout" && $logName != "stderr"} {
 		if {[catch {close $logFile} errmsg] == 1} {
-			tk_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
+			geo_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
 		}
 	}
 	if {[winfo exists .log]} {
 		if {[catch {.log.w.t insert end "$msg\n"} errmsg] == 1} {
-			tk_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
+			geo_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
 		}
 		if {[catch {.log.w.t see end} errmsg] == 1} {	;# move to end of text
-			tk_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
+			geo_dialog .msg $geoEasyMsg(error) $errmsg error 0 OK	
 		}
 	}
 }
 
 #
 #	send GeoEasy msg to tk_dialog or log depending on nogui global variable
-proc GeoMsg {wnd title msg bitmap def args} {
+proc geo_dialog {wnd title msg bitmap def args} {
 	global nogui
 	if {$nogui == 0} {	# tk_dialog if gui on
 		set res [tk_dialog $wnd $title $msg $bitmap $def {*}$args]
@@ -1428,6 +1478,7 @@ proc GeoMsg {wnd title msg bitmap def args} {
 	}
 	return $res
 }
+
 #
 #	Open log window if it is not opened before or rise it
 #	@param none
