@@ -29,6 +29,7 @@ set fileTypes {
 	{"Formato SurvCE RAW" {.rw5 .RW5}}
 	{"Formato n4ce txt" {.n4c N4C}}
 	{"Formato Nikon DTM-300" {.nik .NIK}}
+    {"Formato Nikon RAW" {.raw .RAW}}
 	{"Formato Geodat 124" {.gdt .GDT}}
 	{"Formato GeoProfi" {.mjk .MJK}}
 	{"Cordenadas GeoProfi" {.eov .szt .her .hkr .hdr .EOV .SZT .HER .HKR .HDR}}
@@ -593,6 +594,7 @@ set geoEasyMsg(useblock)	"Blocks"
 set geoEasyMsg(pcode1)		"Leer el c\u00F3digo de punto del nombre de la capa"
 set geoEasyMsg(dxfpnt)		"Puntos de utilizaci\u00F3n"
 set geoEasyMsg(3d)			"3D"
+set geoEasyMsg(skipdbl)     "Skip double"                           ;# TODO
 set geoEasyMsg(addlines)	"Agregar l\u00EDneas"
 set geoEasyMsg(pd)			"S\u00F3lo puntos de detalle"
 set geoEasyMsg(ptext)		"Punto n\u00FAmeros from texto"
