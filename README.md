@@ -14,16 +14,16 @@
 # GeoEasy
 surveying calculation, network adjustment, digital terrain models, regression calculation
 
-Volunteers are wellcome! Send us bug reports, feature requests through the
+Volunteers are welcome! Send us bug reports, feature requests through the
 issue tracker.  Clone the repository, change the code and send us back a pull
-request to include your enchacement in the core system.
+request to include your enhancement in the core system.
 
 ## History
 
-The beginning of GeoEasy goes back to the late nineties (1997). Before the 3.0 
-version it was a proprietary software marketed in Hungary. After twenty
+The beginning of GeoEasy goes back to the late nineties (1997). Prior to version 3.0 
+it was proprietary software marketed in Hungary. After twenty
 year long development (with active and less active periods) in 2017 the license
-has been changed to open source.
+was changed to open source.
 
 ## Documentation
 
@@ -37,13 +37,13 @@ See the [doc](./doc) folder for various reStructuredText files, the [wiki](https
 
 ## Installation
 
-Installation binaries for latest stabile version (3.2.0):
+Installation binaries for latest stable version (3.2.0):
 
 * [Debian/Ubuntu](http://digikom.hu/download/geoeasy_3.2.0.deb)
 * [Windows](http://digikom.hu/download/Gizi320Setup.exe)
 * [Windows portable (zip)](http://digikom.hu/download/GeoEasy320.zip)
 
-Users can select source or [beta binary or older releases](http://digikom.hu/english/geo_easy_e.html). Linux, OSX and Windows operating
+Users can select source or [beta binary or older releases](http://digikom.hu/english/geo_easy_e.html). GNU/Linux, macOS and Windows operating
 systems are supported. See the [installation guide](doc/install.rst).
 
 ## Localization
@@ -80,4 +80,4 @@ GeoEasy available in different languages. You can localize GeoEasy to your langu
 
 ### Yearly
 
-![Download statistics](doc/stat/downloadsyearly.svg "Download statistics of years")
+![Download statistics](doc/stat/downloadsyearly.svg "Yearly download statistics")

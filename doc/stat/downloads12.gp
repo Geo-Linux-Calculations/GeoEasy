@@ -23,7 +23,7 @@ set style fill solid border -1
 set boxwidth 0.75
 
 set output 'downloads12.svg'
-plot for [i=2:9] 'downloads_last_12_months.txt' using i:xtic(1)
+plot for [i=2:10] 'downloads_last_12_months.txt' using i:xtic(1)
 
 # set terminal xterm
 # replot
