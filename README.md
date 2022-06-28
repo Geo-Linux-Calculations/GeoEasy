@@ -18,6 +18,9 @@ Volunteers are welcome! Send us bug reports, feature requests through the
 issue tracker.  Clone the repository, change the code and send us back a pull
 request to include your enhancement in the core system.
 
+![](.//doc/images/main_window.png) 
+![](.//doc/images/graphic1.png)
+
 ## History
 
 The beginning of GeoEasy goes back to the late nineties (1997). Prior to version 3.0 
