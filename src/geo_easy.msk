@@ -6,15 +6,13 @@ global langCodes
 array set langCodes {"040E" hun "0409" eng "0407" ger "0419" rus "0405" cze "040A" es}
 # GUI language change default to hun/eng/ger/... to set GUI language other than OS lang
 global geoLang
-set geoLang {default}
+set geoLang {eng}
 # code page
 global geoCp
 # set geoCp {cp-1250}
 # link to help/docs
 global geoDoc
-set geoDoc {See:
-http://github.com/zsiki/GeoEasy/doc and
-https://github.com/zsiki/GeoEasy/wiki}
+set geoDoc {See:\nhttp://github.com/zsiki/GeoEasy/doc and\nhttps://github.com/zsiki/GeoEasy/wiki}
 # automatic window refresh
 global autoRefresh
 set autoRefresh {1}
@@ -287,3 +285,4 @@ set cooMaskWidths(fix_stdev) {10 10 10 10 10 10 10 10}
 #
 global parMask
 set parMask {51 52 53 55 114 115 116 118 0}
+
