@@ -709,8 +709,8 @@ proc tk_optMenu {w varName args} {
 #	Display About dialog box
 proc ComAbout {} {
 	global comEasyMsg
-    global about_icon
-    global icon_status
+	global about_icon
+	global icon_status
 
 	set w [focus]
 	if {$w == ""} { set w "." }

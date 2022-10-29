@@ -3,12 +3,12 @@
 #	@param rw name of top level window
 #	@return none
 proc init_animate {rw} {
-    global animate geoEasyMsg
+	global animate geoEasyMsg
 	global tcl_platform
 	global home
-    global f1_icon f2_icon
-    global globe_icon
-    global icon_status
+	global f1_icon f2_icon
+	global globe_icon
+	global icon_status
 
 	if {! [info exists icon_status]} {
 		source $home/icons.tcl
@@ -51,9 +51,9 @@ proc init_animate {rw} {
 #	@param option on/off
 #	@return none
 proc Animate {w option} {
-    global animate
+	global animate
 
-    switch -exact $option {
+	switch -exact $option {
 		on {
 			set animate(curBitmap) $animate(lastBitmap) 
 			update
@@ -66,7 +66,7 @@ proc Animate {w option} {
     #
     # Continue with next bitmap
     #
-    if { $animate(curBitmap) >= 0 } {
+	if { $animate(curBitmap) >= 0 } {
 		set bmap [format globe_%0.2d $animate(curBitmap)] 
 		catch "$w configure -image $bmap"
 		incr animate(curBitmap)
@@ -74,5 +74,6 @@ proc Animate {w option} {
 			set animate(curBitmap) 0
 		}
 		after 100 Animate $w continue
-    }
+	}
 }
+
