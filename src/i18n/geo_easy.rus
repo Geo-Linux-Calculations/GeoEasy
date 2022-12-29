@@ -14,7 +14,7 @@ global geoEasyMsg
 global reglist
 set reglist { "2D Линия" "Параллельная 2D линия" "Круг" \
 	"Плоскость" "Горизонтальная плоскость" "Вертикальная плоскость" \
-	"Сфера" "3D линия" "Angle of planes"} ;# "Вертикальный параболоид" ;# TODO
+	"Сфера" "3D линия" "Angle of planes"} ;# "Вертикальный параболоид"
 
 set fileTypes {
 	{"GeoEasy формат" {.geo .GEO}}

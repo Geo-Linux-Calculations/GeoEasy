@@ -40,11 +40,11 @@ See the [doc](./doc) folder for various reStructuredText files, the [wiki](https
 
 ## Installation
 
-Installation binaries for latest stable version (3.2.0):
+Installation binaries for latest stable version (3.2.1):
 
-* [Debian/Ubuntu](http://digikom.hu/download/geoeasy_3.2.0.deb)
-* [Windows](http://digikom.hu/download/Gizi320Setup.exe)
-* [Windows portable (zip)](http://digikom.hu/download/GeoEasy320.zip)
+* [Debian/Ubuntu](http://digikom.hu/download/geoeasy_3.2.1.deb)
+* [Windows](http://digikom.hu/download/Gizi321Setup.exe)
+* [Windows portable (zip)](http://digikom.hu/download/GeoEasy321.zip)
 
 Users can select source or [beta binary or older releases](http://digikom.hu/english/geo_easy_e.html). GNU/Linux, macOS and Windows operating
 systems are supported. See the [installation guide](doc/install.rst).
@@ -60,7 +60,8 @@ GeoEasy available in different languages. You can localize GeoEasy to your langu
 | German    | Gergely Szabó, Csaba Égető                                           |
 | Hungarian | [Zoltán Siki](https://github.com/zsiki)                              |
 | English   | Andras Gabriel, [Zoltán Siki](https://github.com/zsiki)              |
-| Spanish   | [Andres Herrera](https://github.com/AndresHerrera)   |
+| Spanish   | [Andres Herrera](https://github.com/AndresHerrera)                   |
+| Polish    | [Darek Strojecki](https://github.com/nalfgar)                        |
 
 ## Open source software/packages used
 
