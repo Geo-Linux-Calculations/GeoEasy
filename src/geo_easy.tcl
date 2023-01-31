@@ -57,7 +57,7 @@ proc GeoEasy {top} {
 	global saveType comSaveType
 	global geoLangs langCodes
 
-	set version 321 ;# update for new release!
+	set version 322 ;# update for new release!
     #set version_str "[join [split $version {}] .]dev"
 	set version_str "[join [split $version {}] .]"
 	set geoEasyMsg(mainTitle) "GeoEasy $version_str"
