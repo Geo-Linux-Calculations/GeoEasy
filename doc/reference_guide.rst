@@ -1020,8 +1020,12 @@ The popup menu is displayed when you click in the field-book with
 right mouse button.
 
 The first or first few options in the popup menu above the horizontal line show
-the possible value types in the field. For example you can change slope
-distance to horizontal distance and vica versa.
+the possible value types in the field (it comes from the mask definition). 
+For example you can change slope distance to horizontal distance and vica versa.
+There is a special "*Not used*" type for *Horizontal angle*, *Vertical angle*", and 
+"*Slope distance*". Setting this type for an observed value, it won't be used in
+any calculation. It can be useful for blunders without deleting the observation.
+
 
 Delete
 ......
@@ -1132,28 +1136,92 @@ the preliminary coordinates, too.
 Polar point
 +++++++++++
 
-Calculate the coordinates of the detail points from this station
+Calculate the coordinates of the selected point as a polar point. The orientation should be done on
+the station to calculate from. The result is 2D or 3D depending on the available data.
+You can select from the available external directions if more then one are available,
+the list you contians the external point ID, the horizontal distance, the bearing and the héight.
+
+.. code::
+
+	2023.07.20 07:22 - Polar point
+	Point num  Code              E            N      Distance    Bearing
+	5001                     89562.497     3587.525     498.890    132-34-50
+	1_sp                     89929.843     3249.963     123.948
 
 Intersection
 ++++++++++++
 
+Calculate the coordinates of the selected point from observations from two known points.
+The orientation should be done on the stations to calculate from.The result is the 2D position 
+of the point. You can select from the available external directions if more then two are available, 
+the list contains the field-book name and row number of the observation.
+
+.. code::
+
+	2023.07.20 07:11 - Intersection
+	Point num  Code              E            N       Bearing
+	11                       91515.440     2815.220   256-21-46
+	12                       90661.580     1475.280   356-12-16
+	5002                     90587.619     2590.120
+
 Resection
 +++++++++
+
+Calculate the coordinates of the selected point from directions to three known points.
+The result is the 2D position of the point. You can select from the available internal
+directions if more then three are available, 
+the list contains the field-book name and row number of the observation.
+
+
+2023... code::
+
+	07.20 07:41 - Resection
+	Point num  Code              E            N        Direction  Angle
+	14                       91164.160     4415.080    175-34-56    89-50-06
+	12                       90661.580     1475.280    265-25-02   120-52-22
+	13                       84862.540     3865.360     26-17-24
+	5001                     89562.497     3587.525
 
 Arcsection
 ++++++++++
 
+Calculate the coordinates of the selected point from two distances to known points.
+The result is the 2D position of the point. You can select from the available distance
+if more then two are available, 
+the list contains the field-book name, the row number of the observation and the distance.
+
+.. code::
+
+	2023.07.20 07:46 - Arcsection
+	Point num  Code              E            N        Distance
+	5002                     90587.619     2590.120    1203.420
+	5001                     89562.497     3587.525     828.680
+	5003                     89398.521     2775.231
+
+
 3D adjustment
 +++++++++++++
+
+Calculate the 3D position of the selected point using LSM. It is similar to
+free station program of the total stations but the external observations
+are also considered.
 
 Horizontal adjustment
 +++++++++++++++++++++
 
+Calculate the 2D position of the selected point using LSM.
+
 Elevation adjustment
 ++++++++++++++++++++
 
+Calculate the elevation of the selected point using LSM.
+
 Elevation
 +++++++++
+
+Calculate elevation for the selected point using weighted average.
+if more then one is available, You can select from the available observations,
+the list contains the point ID, elevation and distance.
 
 Detail points
 +++++++++++++
@@ -1162,8 +1230,9 @@ GeoEasy coordinate list
 -----------------------
 
 Each loaded data set contains a coordinate list. A list is opened from the
-Edit menu of the main window. Point in the coordinate list are ordered by
-*Point number*. Points may have preliminary or fix (final) coordinates in the
+Edit menu of the main window. Points in the coordinate list are ordered by
+*Point number* using *dictionary* sort (case insensitive but  numbers sorted as integers).
+Points may have preliminary or fix (final) coordinates in the
 coordinate list. Preliminary coordinates are used only for graphical display
 of points and for network adjusments.
 
