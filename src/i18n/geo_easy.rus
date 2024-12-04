@@ -524,7 +524,7 @@ set geoEasyMsg(together)	"Отсутствует значение %s в стро
 set geoEasyMsg(notTogether)	"Значения не могут использоваться вместе с %s в строке %s"
 set geoEasyMsg(stationpn)	"Станция и target - это одна и та же точка %s на линии %s"
 set geoEasyMsg(missingstation)  "Отсутствует станция до строки %s"
-set geoEasyMsg(doublepn)	"Повторная точка для станции %s в строке %s"
+set geoEasyMsg(doublepn)	"Повторная точка %s для станции в строке %s"
 set geoEasyMsg(numError)	"Ошибка %d"
 set geoEasyMsg(csvwarning)	"Чтобы сохранить координаты для импорта в другое программное обеспечение, используйте 'Сохранить как' в главном окне. Вы хотите продолжить?"
 
